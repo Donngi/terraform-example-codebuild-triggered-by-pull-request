@@ -1,0 +1,38 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase ...
+      - DESTINATION_COMMIT=`aws codecommit get-pull-request --pull-request-id ${PULL_REQUEST_ID} | jq -r '.pullRequest.pullRequestTargets[0].destinationCommit'`
+      - ACCOUNT_ID=`echo ${CODEBUILD_BUILD_ARN} | cut -d ":" -f 5`
+      - PROJECT_ID=`echo ${CODEBUILD_BUILD_ARN} | cut -d ":" -f 6 | cut -d "/" -f 2`
+      - BUILD_ID=`echo ${CODEBUILD_BUILD_ID} | cut -d ":" -f 2`
+      - BUILD_URL="https://${AWS_DEFAULT_REGION}.console.aws.amazon.com/codesuite/codebuild/${ACCOUNT_ID}/projects/${PROJECT_ID}/build/${PROJECT_ID}%3A${BUILD_ID}"
+  pre_build:
+    on-failure: CONTINUE
+    commands:
+      - echo Entered the pre_build phase ...
+      # YOUR LOGIC HERE
+  build:
+    on-failure: CONTINUE
+    commands:
+      - echo Entered the build phase ...
+      # YOUR LOGIC HERE
+  post_build:
+    commands:
+      - echo Entered the post_build phase ...
+      - echo ${CODEBUILD_BUILD_SUCCEEDING}
+      # Post a comment for a pull request tied to the project.
+      - |
+        if [ ${CODEBUILD_BUILD_SUCCEEDING} -eq 1 ]; then
+          COMMENT_MESSAGE="\[Auto\] ✅ CI process is succeeded! \n[View detail ... ](${BUILD_URL})"
+        else
+          COMMENT_MESSAGE="\[Auto\] ❌ CI process is failed! \n[View detail ... ](${BUILD_URL})"
+        fi
+      - |
+        aws codecommit post-comment-for-pull-request --pull-request-id ${PULL_REQUEST_ID} \
+            --repository-name ${REPOSITORY_NAME} \
+            --before-commit-id ${CODEBUILD_RESOLVED_SOURCE_VERSION} \
+            --after-commit-id ${DESTINATION_COMMIT} \
+            --content "${COMMENT_MESSAGE}"

@@ -1,0 +1,14 @@
+{
+    "python.languageServer": "Pylance",
+    "python.autoComplete.extraPaths": [],
+    "python.analysis.extraPaths": [],
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.flake8Enabled": false,
+    "python.formatting.provider": "black",
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyArgs": [],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    }
+}
