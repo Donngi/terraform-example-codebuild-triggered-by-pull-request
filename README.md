@@ -6,11 +6,11 @@
 ## How does it work?
 This project adds daemon Lambda functions which monitor all pull requests in an AWS account.
 
-First, when a pull request is created, `Lambda - creator` makes a new CodeBuild project tied to the pull request.
+1. when a pull request is created, `Lambda - creator` makes a new CodeBuild project tied to the pull request.
 
-Second, when a source branch is changed, `Lambda - runner` starts a new build. 
+2. when a source branch is changed, `Lambda - runner` starts a new build. 
 
-Finally, when the pull request is closed, `Lambda - sweeper` deletes the CodeBuild project. 
+3. when the pull request is closed, `Lambda - sweeper` deletes the CodeBuild project. 
 No worries! `Lambda - sweeper` doesn't delete build histories and logs.
 
 ## Install
@@ -25,9 +25,9 @@ NOTE: In order to detect python source code update (for Lambda), this project us
 ## Notification
 This example supports two ways of notification.
 
-One is **a comment notification**. CodeBuild adds a success/failure comment to the pull request after builds. This notification is insrumented by using aws cli. See buildspec.yml .
+1. **Comment notification**: CodeBuild adds a success/failure comment to the pull request after builds. This notification is insrumented by using aws cli. See buildspec.yml .
 
-Another is **a SNS notification**. CodeBuild sends a message to a topic after builds. This notification uses AWS native notification function - CodeStar Notifications. You can subscribe the topic and make any functions you want (e.g. AWS Chatbot). 
+2. **SNS notification**: CodeBuild sends a message to a topic after builds. This notification uses AWS native notification function - CodeStar Notifications. You can subscribe the topic and make any functions you want (e.g. AWS Chatbot). 
 
 ## More
 ### Exclusion list
