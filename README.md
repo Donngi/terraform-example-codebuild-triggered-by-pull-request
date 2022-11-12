@@ -1,5 +1,8 @@
 # Minimum example of CodeBuild triggered by pull requests.
 
+# 🎃 Deprecated
+A simpler method has been published. See [terraform-example-codebuild-triggered-by-pull-request-2](https://github.com/Jimon-s/terraform-example-codebuild-triggered-by-pull-request-2).
+
 ## Architecture
 ![Architecture](./doc/architecture.drawio.svg)
 
